@@ -1,18 +1,30 @@
 const path = require('path')
-const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+const webpack = require('webpack')
+const dotenv = require('dotenv') // Importar dotenv
+
+// Carregar variáveis de ambiente do .env
+dotenv.config() // Isso carregará as variáveis do .env para process.env
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production'
 
+  // Definir as variáveis de ambiente que serão injetadas no código do cliente
+  const clientEnv = Object.keys(process.env)
+    .filter((key) => key.startsWith('REACT_APP_'))
+    .reduce((acc, key) => {
+      acc[key] = JSON.stringify(process.env[key]) // Stringify para que sejam injetadas como strings literais
+      return acc
+    }, {})
+
   return {
-    entry: './src/main.tsx',
+    entry: './src/main.tsx', // Seu ponto de entrada principal
     output: {
       filename: isProduction ? '[name].[contenthash].js' : '[name].bundle.js',
       path: path.resolve(__dirname, 'dist'),
-      clean: true,
-      publicPath: '/'
+      clean: true, // Limpa o diretório 'dist' antes de cada build
+      publicPath: '/' // Importante para o React Router DOM
     },
     resolve: {
       extensions: ['.tsx', '.ts', '.js', '.jsx']
@@ -32,9 +44,12 @@ module.exports = (env, argv) => {
       ]
     },
     plugins: [
-      new webpack.DefinePlugin(envVars),
       new HtmlWebpackPlugin({
         template: './public/index.html' // Seu arquivo HTML de template
+      }),
+      // Adicione o DefinePlugin para injetar variáveis de ambiente
+      new webpack.DefinePlugin({
+        'process.env': clientEnv // Define process.env como um objeto com as variáveis
       }),
       // Adicione o BundleAnalyzerPlugin apenas em modo de produção
       isProduction &&
