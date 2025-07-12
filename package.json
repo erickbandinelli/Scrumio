@@ -6,7 +6,7 @@
   "types": "dist/main.d.ts",
   "scripts": {
     "dev": "webpack serve --mode development --config webpack.config.js --open",
-    "build": "tsc --emitDeclarationOnly && webpack --mode production --config webpack.config.js build --output public",
+    "build": "tsc --emitDeclarationOnly && webpack --mode production --config webpack.config.js",
     "test": "jest",
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write ."
@@ -61,6 +61,7 @@
     "style-loader": "^4.0.0",
     "tailwindcss": "^3.4.17",
     "ts-jest": "^29.4.0",
+    "ts-loader": "^9.5.2",
     "typescript": "^5.8.3",
     "webpack": "^5.100.1",
     "webpack-bundle-analyzer": "^4.10.2",
