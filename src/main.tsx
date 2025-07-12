@@ -1,10 +1,11 @@
 // seu main.tsx
-import React from 'react'
+import React, { lazy } from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import App from './App'
-import Room from './Room'
 import './index.css'
+
+const Room = lazy(() => import('./Room'))
+const App = lazy(() => import('./App'))
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

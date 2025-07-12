@@ -53,6 +53,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new BundleAnalyzerPlugin(),
     new HtmlWebpackPlugin({
       template: './public/index.html' // ou './src/index.html'
     })
