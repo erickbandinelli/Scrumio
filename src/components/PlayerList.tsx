@@ -1,8 +1,8 @@
-import { Card, CardContent, Stack, Typography } from "@mui/material";
-import { usePokerStore } from "../store/pokerStore";
+import { Card, CardContent, Stack, Typography } from '@mui/material'
+import { usePokerStore } from '../store/roomStore'
 
 export default function PlayerList() {
-  const { players, revealVotes } = usePokerStore();
+  const { players, revealVotes } = usePokerStore()
 
   return (
     <Stack spacing={2}>
@@ -10,12 +10,12 @@ export default function PlayerList() {
         <Card key={player.name}>
           <CardContent>
             <Typography>
-              {player.name}:{" "}
-              {revealVotes ? (player.vote ?? "—") : player.vote ? "✔️" : "—"}
+              {player.name}:{' '}
+              {revealVotes ? (player.vote ?? '—') : player.vote ? '✔️' : '—'}
             </Typography>
           </CardContent>
         </Card>
       ))}
     </Stack>
-  );
+  )
 }
