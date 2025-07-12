@@ -2,22 +2,35 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const webpack = require('webpack')
-const dotenv = require('dotenv') // Importar dotenv
+const dotenv = require('dotenv')
 
 // Carregar variáveis de ambiente do .env
-dotenv.config() // Isso carregará as variáveis do .env para process.env
+dotenv.config()
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production'
 
-  // Definir as variáveis de ambiente que serão injetadas no código do cliente
-  // Cada variável process.env.REACT_APP_... é definida individualmente
-  const clientEnv = Object.keys(process.env)
-    .filter((key) => key.startsWith('REACT_APP_'))
-    .reduce((acc, key) => {
-      acc[`process.env.${key}`] = JSON.stringify(process.env[key]) // Prefixa com 'process.env.' e stringify
-      return acc
-    }, {})
+  // Define as variáveis de ambiente que serão injetadas no código do cliente
+  // Garante que 'process.env' existe e injeta as variáveis REACT_APP_ nele.
+  const definedEnv = {
+    // Explicitamente define 'process' como um objeto global vazio se ele não existir.
+    // Isso é uma medida de segurança para garantir que 'process' esteja definido.
+    process: '{}',
+    // Define 'process.env' como um objeto vazio para começar.
+    'process.env': {},
+    // Define NODE_ENV, que é frequentemente usado por bibliotecas.
+    'process.env.NODE_ENV': JSON.stringify(
+      isProduction ? 'production' : 'development'
+    )
+  }
+
+  // Adiciona todas as variáveis de ambiente que começam com REACT_APP_
+  // Elas serão injetadas como propriedades de 'process.env'
+  for (const key in process.env) {
+    if (key.startsWith('REACT_APP_')) {
+      definedEnv[`process.env.${key}`] = JSON.stringify(process.env[key])
+    }
+  }
 
   return {
     entry: './src/main.tsx', // Seu ponto de entrada principal
@@ -48,9 +61,8 @@ module.exports = (env, argv) => {
       new HtmlWebpackPlugin({
         template: './public/index.html' // Seu arquivo HTML de template
       }),
-      // Adicione o DefinePlugin para injetar variáveis de ambiente
-      // Agora, cada variável é definida como 'process.env.SUA_VARIAVEL_AQUI'
-      new webpack.DefinePlugin(clientEnv),
+      // Use o DefinePlugin para injetar as variáveis de ambiente
+      new webpack.DefinePlugin(definedEnv),
       // Adicione o BundleAnalyzerPlugin apenas em modo de produção
       isProduction &&
         new BundleAnalyzerPlugin({
