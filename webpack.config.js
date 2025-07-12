@@ -11,10 +11,11 @@ module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production'
 
   // Definir as variáveis de ambiente que serão injetadas no código do cliente
+  // Cada variável process.env.REACT_APP_... é definida individualmente
   const clientEnv = Object.keys(process.env)
     .filter((key) => key.startsWith('REACT_APP_'))
     .reduce((acc, key) => {
-      acc[key] = JSON.stringify(process.env[key]) // Stringify para que sejam injetadas como strings literais
+      acc[`process.env.${key}`] = JSON.stringify(process.env[key]) // Prefixa com 'process.env.' e stringify
       return acc
     }, {})
 
@@ -48,9 +49,8 @@ module.exports = (env, argv) => {
         template: './public/index.html' // Seu arquivo HTML de template
       }),
       // Adicione o DefinePlugin para injetar variáveis de ambiente
-      new webpack.DefinePlugin({
-        'process.env': clientEnv // Define process.env como um objeto com as variáveis
-      }),
+      // Agora, cada variável é definida como 'process.env.SUA_VARIAVEL_AQUI'
+      new webpack.DefinePlugin(clientEnv),
       // Adicione o BundleAnalyzerPlugin apenas em modo de produção
       isProduction &&
         new BundleAnalyzerPlugin({
