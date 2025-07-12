@@ -63,6 +63,10 @@ module.exports = (env, argv) => {
       }),
       // Use o DefinePlugin para injetar as variáveis de ambiente
       new webpack.DefinePlugin(definedEnv),
+      // Adiciona um plugin para injetar um polyfill para 'process' no início do bundle
+      new webpack.ProvidePlugin({
+        process: 'process/browser' // Isso injeta um polyfill para 'process'
+      }),
       // Adicione o BundleAnalyzerPlugin apenas em modo de produção
       isProduction &&
         new BundleAnalyzerPlugin({
