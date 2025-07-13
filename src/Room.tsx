@@ -280,7 +280,7 @@ export default function Room(): React.ReactElement {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center p-4 font-inter">
       <header className="w-full bg-blue-700 text-white py-4 px-6 shadow-md fixed top-0 left-0 z-50 rounded-b-lg">
-        <h1 className="text-2xl font-semibold">Planning Poker Online</h1>
+        <h1 className="text-2xl font-semibold">Scrumio Poker</h1>
       </header>
 
       <main className="flex-grow flex items-center justify-center w-full mt-20 px-4">
