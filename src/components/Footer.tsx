@@ -4,7 +4,7 @@ const Footer = () => (
     <a
       href="https://www.linkedin.com/in/erick-de-oliveira-b592228b/"
       target="_blank"
-      className="text-gray-600 hover:planning-blue"
+      className="text-gray-600 focus:planning-blue"
     >
       Erick de Oliveira
     </a>{' '}
