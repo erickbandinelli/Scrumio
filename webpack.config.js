@@ -78,7 +78,9 @@ module.exports = (env, argv) => {
         new TerserPlugin({
           terserOptions: {
             ecma: 2024,
-            compress: {},
+            compress: {
+              drop_console: isProduction
+            },
             output: {
               comments: false
             },
