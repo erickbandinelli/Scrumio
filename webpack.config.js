@@ -7,20 +7,6 @@ const TerserPlugin = require('terser-webpack-plugin')
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production'
 
-  // Define as variáveis de ambiente que serão injetadas no código do cliente
-  // Agora apenas as variáveis REACT_APP_ são definidas, sem tentar definir 'process' globalmente.
-  const definedEnv = {
-    'process.env.NODE_ENV': JSON.stringify(
-      isProduction ? 'production' : 'development'
-    )
-  }
-
-  for (const key in process.env) {
-    if (key.startsWith('REACT_APP_')) {
-      definedEnv[`process.env.${key}`] = JSON.stringify(process.env[key])
-    }
-  }
-
   return {
     entry: './src/main.tsx',
     output: {
@@ -49,7 +35,29 @@ module.exports = (env, argv) => {
       new HtmlWebpackPlugin({
         template: './public/index.html'
       }),
-      new webpack.DefinePlugin(definedEnv),
+      new webpack.DefinePlugin({
+        'process.env.REACT_APP_FIREBASE_API_KEY': JSON.stringify(
+          process.env.REACT_APP_FIREBASE_API_KEY
+        ),
+        'process.env.REACT_APP_FIREBASE_AUTH_DOMAIN': JSON.stringify(
+          process.env.REACT_APP_FIREBASE_AUTH_DOMAIN
+        ),
+        'process.env.REACT_APP_FIREBASE_DATABASE_URL': JSON.stringify(
+          process.env.REACT_APP_FIREBASE_DATABASE_URL
+        ),
+        'process.env.REACT_APP_FIREBASE_PROJECT_ID': JSON.stringify(
+          process.env.REACT_APP_FIREBASE_PROJECT_ID
+        ),
+        'process.env.REACT_APP_FIREBASE_STORAGE_BUCKET': JSON.stringify(
+          process.env.REACT_APP_FIREBASE_STORAGE_BUCKET
+        ),
+        'process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID': JSON.stringify(
+          process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID
+        ),
+        'process.env.REACT_APP_FIREBASE_APP_ID': JSON.stringify(
+          process.env.REACT_APP_FIREBASE_APP_ID
+        )
+      }),
       isProduction &&
         new BundleAnalyzerPlugin({
           analyzerMode: 'static',
