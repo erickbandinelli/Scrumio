@@ -1,25 +1,11 @@
-// src/components/MessageBox.tsx
 import React from 'react'
 
-/**
- * Props for the MessageBox component.
- * @typedef {object} MessageBoxProps
- * @property {string} message - The message to display.
- * @property {'info' | 'success' | 'error'} [type='info'] - The type of message (determines styling).
- * @property {() => void} onClose - Function to call when the message box is closed.
- */
 interface MessageBoxProps {
   message: string
   type?: 'info' | 'success' | 'error'
   onClose: () => void
 }
 
-/**
- * A simple message box component to display alerts or notifications.
- * Replaces native browser alerts for better UI control.
- *
- * @param {MessageBoxProps} props - Component props.
- */
 const MessageBox: React.FC<MessageBoxProps> = ({
   message,
   type = 'info',

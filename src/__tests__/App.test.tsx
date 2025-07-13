@@ -1,4 +1,3 @@
-// src/__tests__/App.test.tsx
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { push, ref, set } from 'firebase/database'
 import { BrowserRouter, useNavigate } from 'react-router-dom'

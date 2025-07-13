@@ -1,4 +1,3 @@
-// src/__tests__/roomStore.test.ts
 import { act } from 'react-dom/test-utils'
 import useRoomStore from '../store/roomStore'
 

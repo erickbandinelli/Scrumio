@@ -1,9 +1,7 @@
-/* src/index.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Estilos globais adicionais, se necessário */
 body {
   margin: 0;
   font-family:

@@ -1,10 +1,12 @@
-// src/Room.tsx
 import { get, onValue, ref, remove, set, update } from 'firebase/database'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { lazy, useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import MessageBox from './components/MessageBox'
 import { db } from './firebase'
 import useRoomStore, { PlayerVotes } from './store/roomStore'
+
+const Header = lazy(() => import('@/components/Header'))
+const Footer = lazy(() => import('@/components/Footer'))
 
 // Cartas para o modo "Normal" (Pontos de Estória)
 const normalCards: string[] = ['1', '2', '3', '5', '8', '13', '?']
@@ -279,9 +281,7 @@ export default function Room(): React.ReactElement {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center p-4 font-inter">
-      <header className="w-full bg-blue-700 text-white py-4 px-6 shadow-md fixed top-0 left-0 z-50 rounded-b-lg">
-        <h1 className="text-2xl font-semibold">Scrumio Poker</h1>
-      </header>
+      <Header />
 
       <main className="flex-grow flex items-center justify-center w-full mt-20 px-4">
         <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-xl p-8 mt-4">
@@ -466,10 +466,7 @@ export default function Room(): React.ReactElement {
         </div>
       </main>
 
-      <footer className="w-full text-center py-4 text-gray-600 text-sm mt-auto">
-        &copy; {new Date().getFullYear()} Scrumio Planning Poker Online. Todos
-        os direitos reservados.
-      </footer>
+      <Footer />
 
       {messageBox.show && (
         <MessageBox

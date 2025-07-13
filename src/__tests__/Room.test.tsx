@@ -1,4 +1,3 @@
-// src/__tests__/Room.test.tsx
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { get, onValue, remove, set, update } from 'firebase/database'
 import { BrowserRouter, useNavigate, useParams } from 'react-router-dom'

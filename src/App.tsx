@@ -1,9 +1,11 @@
-// src/App.tsx
 import { push, ref, set } from 'firebase/database'
-import React, { useState } from 'react'
+import React, { lazy, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import MessageBox from './components/MessageBox'
 import { db } from './firebase'
+
+const Header = lazy(() => import('@/components/Header'))
+const Footer = lazy(() => import('@/components/Footer'))
 
 function App(): React.ReactElement {
   const [roomNameInput, setRoomNameInput] = useState<string>('')
@@ -40,9 +42,7 @@ function App(): React.ReactElement {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 font-inter">
-      <header className="w-full bg-blue-700 text-white py-4 px-6 shadow-md fixed top-0 left-0 z-50 flex justify-center items-center rounded-b-lg">
-        <h1 className="text-3xl font-semibold">Scrumio Poker</h1>
-      </header>
+      <Header />
 
       <main className="flex-grow flex items-center justify-center w-full">
         <div className="max-w-md mx-auto bg-white rounded-lg shadow-xl p-8">
@@ -76,10 +76,7 @@ function App(): React.ReactElement {
         </div>
       </main>
 
-      <footer className="w-full text-center py-4 text-gray-600 text-sm mt-auto">
-        &copy; {new Date().getFullYear()} Planning Poker Online. Todos os
-        direitos reservados.
-      </footer>
+      <Footer />
 
       {messageBox.show && (
         <MessageBox

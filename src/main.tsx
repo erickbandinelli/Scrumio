@@ -4,8 +4,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './firebase'
 import './index.css'
 
-const App = lazy(() => import('./App'))
-const Room = lazy(() => import('./Room'))
+const App = lazy(() => import('@/App'))
+const Room = lazy(() => import('@/Room'))
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
