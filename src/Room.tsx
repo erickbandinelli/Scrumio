@@ -467,8 +467,8 @@ export default function Room(): React.ReactElement {
       </main>
 
       <footer className="w-full text-center py-4 text-gray-600 text-sm mt-auto">
-        &copy; {new Date().getFullYear()} Planning Poker Online. Todos os
-        direitos reservados.
+        &copy; {new Date().getFullYear()} Scrumio Planning Poker Online. Todos
+        os direitos reservados.
       </footer>
 
       {messageBox.show && (
