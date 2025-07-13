@@ -4,16 +4,12 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const webpack = require('webpack')
 const TerserPlugin = require('terser-webpack-plugin')
 
-// Carregar variáveis de ambiente do .env
-// dotenv.config(); // Removido, pois a Vercel já injeta
-
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production'
 
   // Define as variáveis de ambiente que serão injetadas no código do cliente
+  // Agora apenas as variáveis REACT_APP_ são definidas, sem tentar definir 'process' globalmente.
   const definedEnv = {
-    process: '{}',
-    'process.env': {},
     'process.env.NODE_ENV': JSON.stringify(
       isProduction ? 'production' : 'development'
     )
@@ -26,12 +22,12 @@ module.exports = (env, argv) => {
   }
 
   return {
-    entry: './src/main.tsx', // Seu ponto de entrada principal
+    entry: './src/main.tsx',
     output: {
       filename: isProduction ? '[name].[contenthash].js' : '[name].bundle.js',
       path: path.resolve(__dirname, 'dist'),
-      clean: true, // Limpa o diretório 'dist' antes de cada build
-      publicPath: '/' // Importante para o React Router DOM
+      clean: true,
+      publicPath: '/'
     },
     resolve: {
       extensions: ['.tsx', '.ts', '.js', '.jsx']
@@ -45,19 +41,15 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.css$/,
-          use: ['style-loader', 'css-loader', 'postcss-loader'] // Certifique-se de que postcss-loader está configurado
+          use: ['style-loader', 'css-loader', 'postcss-loader']
         }
-        // Adicione regras para outros tipos de arquivos se você os estiver usando (ex: imagens, fontes)
       ]
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: './public/index.html' // Seu arquivo HTML de template
+        template: './public/index.html'
       }),
       new webpack.DefinePlugin(definedEnv),
-      new webpack.ProvidePlugin({
-        process: 'process/browser'
-      }),
       isProduction &&
         new BundleAnalyzerPlugin({
           analyzerMode: 'static',
@@ -70,20 +62,20 @@ module.exports = (env, argv) => {
       port: 3000
     },
     optimization: {
-      minimize: false, // TEMPORARIAMENTE DESATIVADO PARA DEBUG: Habilita a minificação em produção
-      // minimizer: [ // Comentado para desativar o Terser
-      //   new TerserPlugin({
-      //     terserOptions: {
-      //       ecma: 2024,
-      //       compress: {},
-      //       output: {
-      //         comments: false,
-      //       },
-      //       sourceMap: false,
-      //     },
-      //     extractComments: false,
-      //   }),
-      // ],,
+      minimize: isProduction,
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            ecma: 2024,
+            compress: {},
+            output: {
+              comments: false
+            },
+            sourceMap: false
+          },
+          extractComments: false
+        })
+      ],
       splitChunks: {
         chunks: 'all'
       }
